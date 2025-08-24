@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Learn & Test Your Knowledge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">QuizMaster</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="home-page" class="container">
+        <div class="hero fade-in">
+            <div class="hero-content">
+                <h1>Test Your Knowledge</h1>
+                <p>Challenge yourself with our interactive quizzes across multiple categories</p>
+            </div>
+        </div>
+
+        <div class="categories fade-in">
+            <div class="category-card" onclick="startQuiz('general-knowledge')">
+                <span class="category-icon">🧠</span>
+                <h3>General Knowledge</h3>
+                <p>Test your general knowledge across various topics</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+            <div class="category-card" onclick="startQuiz('science')">
+                <span class="category-icon">🔬</span>
+                <h3>Science</h3>
+                <p>Explore the wonders of science and technology</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+            <div class="category-card" onclick="startQuiz('history')">
+                <span class="category-icon">🏛️</span>
+                <h3>History</h3>
+                <p>Journey through historical events and figures</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+            <div class="category-card" onclick="startQuiz('sports')">
+                <span class="category-icon">⚽</span>
+                <h3>Sports</h3>
+                <p>Test your knowledge of sports and athletics</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+            <div class="category-card" onclick="startQuiz('movies')">
+                <span class="category-icon">🎬</span>
+                <h3>Movies</h3>
+                <p>Lights, camera, action! Movie trivia awaits</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+            <div class="category-card" onclick="startQuiz('coding')">
+                <span class="category-icon">💻</span>
+                <h3>Programming</h3>
+                <p>Challenge your coding knowledge and skills</p>
+                <span class="quiz-count">10 Questions</span>
+            </div>
+        </div>
+
+        <div class="leaderboard fade-in">
+            <h3>🏆 Your Recent Scores</h3>
+            <ul class="leaderboard-list" id="recent-scores">
+                <li class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="rank">1</span>
+                        <span>No scores yet - Take your first quiz!</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="quiz-page" class="container hidden">
+        <div class="quiz-container">
+            <div class="quiz-header fade-in">
+                <div class="quiz-info">
+                    <h1 class="quiz-title" id="quiz-title">Quiz</h1>
+                    <div class="quiz-meta">
+                        <div class="timer" id="timer">05:00</div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span id="question-progress">Question 1 of 10</span>
+                        <span id="score-display">Score: 0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card fade-in" id="question-container">
+                <div class="question" id="question-text">
+                    Loading question...
+                </div>
+                <div class="options" id="options-container">
+                    </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" onclick="showPage('home')">
+                        ← Back to Home
+                    </button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-page" class="container hidden">
+        <div class="results-container">
+            <div class="result-card fade-in">
+                <div class="performance-badge" id="performance-badge">Excellent!</div>
+                <div class="score-circle" id="score-circle">
+                    <div class="score-inner">
+                        <div class="score-percentage" id="final-percentage">85%</div>
+                        <div class="score-text">Score</div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="correct-count">8</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="incorrect-count">2</div>
+                        <div class="stat-label">Incorrect</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="time-taken">3:24</div>
+                        <div class="stat-label">Time Taken</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="accuracy">80%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" onclick="showPage('home')">
+                        ← Back to Home
+                    </button>
+                    <button class="btn btn-primary" onclick="retakeQuiz()">
+                        🔄 Retake Quiz
+                    </button>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <h3>📊 Question Review</h3>
+                <div id="question-review">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-page" class="container hidden">
+        <div class="about-content fade-in">
+            <div class="hero" style="padding: 2rem; margin-bottom: 2rem;">
+                <h1>About QuizMaster</h1>
+                <p>Your ultimate destination for interactive learning and knowledge testing</p>
+            </div>
+            
+            <div class="result-card">
+                <h2>🎯 Our Mission</h2>
+                <p>QuizMaster is designed to make learning fun and engaging through interactive quizzes. Whether you're a student looking to test your knowledge, a professional wanting to stay sharp, or someone who simply loves trivia, our platform offers something for everyone.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast & Responsive</h3>
+                    <p>Optimized for speed and performance across all devices</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Beautiful Design</h3>
+                    <p>Clean, modern interface with dark/light mode support</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Perfect experience on mobile, tablet, and desktop</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>Track your performance and see detailed analytics</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎲</div>
+                    <h3>Randomized Questions</h3>
+                    <p>Questions and options are shuffled for unique experiences</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Timed Challenges</h3>
+                    <p>Test your knowledge under pressure with timed quizzes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-page" class="container hidden">
+        <div class="about-content fade-in">
+            <div class="hero" style="padding: 2rem; margin-bottom: 2rem;">
+                <h1>Get in Touch</h1>
+                <p>We'd love to hear from you! Send us your feedback or questions</p>
+            </div>
+            
+            <div class="result-card">
+                <h2>📧 Contact Information</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">✉️</div>
+                        <h3>Email</h3>
+                        <p>hello@quizmaster.com</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💬</div>
+                        <h3>Support</h3>
+                        <p>support@quizmaster.com</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🐛</div>
+                        <h3>Bug Reports</h3>
+                        <p>bugs@quizmaster.com</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <h3>Suggestions</h3>
+                        <p>ideas@quizmaster.com</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <p><strong>Response Time:</strong> We typically respond within 24 hours</p>
+                    <p><strong>Available:</strong> Monday - Friday, 9 AM - 5 PM EST</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
